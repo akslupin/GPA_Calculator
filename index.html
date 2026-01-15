@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>CGPA calc</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <style>
+        @media (max-width: 768px) {
+            .content {
+                background-size: contain;
+                background-position: top;
+               } 
+            }
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-image: url('website.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+        #sgpa, #cgpa {
+            background-color: #473f90;
+            width: 210px;
+            border-radius: 8px;
+            border: #473f90;
+            margin: 8px 0;
+            padding: 8px;
+            color: #f8e4aa; 
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        #sdropdownContainer select, #cdropdownContainer input {
+            align-items: center;
+            border-radius: 5px; 
+            width: 210px;
+            background-color: #2f4f8c;
+            border: #2f4f8c;
+            margin: 8px 0;
+            padding: 8px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            color: #f8e4aa;
+        }
+        .dropdown-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        #addingRows {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        #add_sub, #rem_sub, #add_sem, #rem_sem{
+            background-color: #473f90;
+            width: 230px;
+            border-radius: 8px;
+            border: #473f90;
+            margin: 8px 0;
+            padding: 8px;
+            color: #f8e4aa; 
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        #scalcbtn, #ccalcbtn {
+            background-color:#473f90;
+            width: 210px;
+            border-radius: 8px;
+            border: #473f90;
+            margin: 25px auto;
+            padding: 8px;
+            color: #f8e4aa; 
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            justify-content: center;
+            display: flex;
+        }
+        #rstbtn {
+            margin: 40px auto;
+            padding: 8px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #473f90;
+            width: 70px;
+            border-radius: 8px;
+            border: #473f90;
+            color: #fbebbc;
+            justify-content: center;
+            display: flex;
+            }
+        #sresult, #cresult{ 
+            font-weight: bold;
+            font-size: 25px;
+            color: #fbebbc;
+            text-align: center;
+            }
+        #cgpa_actionArea {
+            flex-direction: column;
+            align-items: center;
+            }
+        #cdropdownContainer input:focus {
+            outline: none;
+            border: 2px solid #f2d7b1;
+            background-color: #3e5a8e;
+            }
+    </style>
+    <body>
+        <button id="sgpa" >SGPA</button>
+        <button id="cgpa" >CGPA</button> 
+        <div id="sgpa_actionArea" style="display: none" >
+            <div id="addingRows">
+                <button id="add_sub"> + Add Subject </button> 
+                <button id="rem_sub" onclick="rem_sub()"> - Remove Subject </button>
+            </div>
+            <div id="sdropdownContainer"></div>
+                <button id="scalcbtn" onclick="calculate_sgpa()">Calculate SGPA</button>
+                 <p id="sresult"></p>
+                <button id="rstbtn" onclick="reset()">Reset</button>
+        </div>
+        <div id="cgpa_actionArea" style="display: none">
+            <div class="addingRows">
+            <button id="add_sem"> + Add Semester </button> 
+            <button id="rem_sem" onclick="rem_sem()"> - Remove Semester </button>
+            </div>
+            <div id="cdropdownContainer"></div>
+            <button id="ccalcbtn" onclick="calculate_cgpa()">Calculate CGPA</button>
+             <p id="cresult"></p>
+            <button id="rstbtn" onclick="reset()">Reset</button>
+        </div>
+    </body>
+    <script> 
+        const sgpa = document.getElementById('sgpa');
+        const cgpa = document.getElementById('cgpa');
+        const sgpa_actionArea = document.getElementById('sgpa_actionArea');
+        const add_sub = document.getElementById('add_sub');
+        const dropdownContainer = document.getElementById('sdropdownContainer');
+
+
+        sgpa.addEventListener('click', () => { // when the SGPA button is clicked...
+            sgpa.style.display = 'none'; // hide the sgpa button...
+            cgpa.style.display = 'none'; // and the cgpa button.
+            sgpa_actionArea.style.display = 'block' // show the action area where our drop down is present
+            for (let i = 0; i < 3; i++){
+            screateDropdownRow() ; } // there must be atleast three dropdowns
+        });
+        function screateDropdownRow() {
+            const row = document.createElement('div'); // create a new div container
+            row.style.display = 'flex'; 
+            row.classList.add('dropdown-row'); // adding it to a class
+
+            row.innerHTML = `
+            <select class="grade" > 
+                <option value="S">S</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+            </select>
+              <select class="credits"> Credits
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+            `; // put a row od dropdown 
+            sdropdownContainer.appendChild(row); // keep adding
+        }
+        add_sub.addEventListener('click', screateDropdownRow); // add one every single time add_sub button is clicked
+
+
+
+        function calculate_sgpa(){
+            const grade_points = {
+            "S" : 10,
+            "A" : 9,
+            "B" : 8,
+            "C" : 7,
+            "D" : 6,
+            "E" : 5,
+            "F" : 0
+        }
+            const rows = document.querySelectorAll('#sdropdownContainer > div'); // look for all the selected options in the container
+            let totalPoints = 0;
+            let totalCredits = 0;
+            rows.forEach(row => { // for every row
+                const grades = row.querySelector('.grade'); // find selected grade in that row
+                const credit = row.querySelector('.credits');// find selected credit in that row
+                const selectedGrades = grades.value;// get the actual value from the dropdown
+                const gradeNumbers = grade_points[selectedGrades] || 0; // convert it into number from the object
+                const selectedCredits = Number(credit.value); // get the actual value from the dropdown and mconvert it into number
+                const points = gradeNumbers * selectedCredits; // calculate points for that subject 
+                totalPoints += points;// total points for ALL subjects 
+                totalCredits += selectedCredits; // total credits for ALL subjects
+            });
+            const sgpa = totalPoints / totalCredits;
+            document.getElementById("sresult").innerText = sgpa.toFixed(2);
+           
+        }
+        function rem_sub() {
+            const container = document.getElementById('sdropdownContainer');
+            const lastRow = container.lastElementChild;
+            if (lastRow) {
+                lastRow.remove();
+            }
+        }
+        const add_sem = document.getElementById('add_sem');
+        const cgpa_actionArea = document.getElementById('cgpa_actionArea');
+        const cdropdownContainer = document.getElementById('cdropdownContainer');
+        cgpa.addEventListener('click', () => {
+            sgpa.style.display = 'none';
+            cgpa.style.display = 'none';
+            cgpa_actionArea.style.display = 'block'
+            for (let i = 0; i < 2; i++){
+            ccreateDropdownRow() ; }
+        });
+        function ccreateDropdownRow() {
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.classList.add('dropdown-row')
+
+            row.innerHTML = `
+            <input type="number" class="sem_gpa" step="0.01" placeholder="Enter SGPA">
+            <input type="number" class="sem_credits" placeholder="Total Credits (eg:26)">
+            `;
+            cdropdownContainer.appendChild(row);
+        }
+        add_sem.addEventListener('click', ccreateDropdownRow);
+        function calculate_cgpa() {
+        const rows = document.querySelectorAll('#cdropdownContainer > div');
+            let totalPoints = 0;
+            let totalCredits = 0;
+            rows.forEach(row => {
+                const sgpa  = row.querySelector('.sem_gpa'); 
+                const allCredits = row.querySelector('.sem_credits');
+                const sgpa_val = parseFloat(sgpa.value);
+                const allCredits_val = parseFloat(allCredits.value);
+                const points = sgpa_val * allCredits_val ; 
+                totalPoints += points;
+                totalCredits += allCredits_val; 
+            });
+            const cgpa = totalPoints / totalCredits;
+            document.getElementById("cresult").innerText = cgpa.toFixed(2);
+        }
+         function rem_sem() {
+            const container = document.getElementById('cdropdownContainer');
+            const lastRow = container.lastElementChild;
+            if (lastRow) {
+                lastRow.remove();
+            }
+        }
+        function reset(){
+            sgpa.style.display = "";
+            cgpa.style.display = "";
+            sgpa_actionArea.style.display = 'none';
+            cgpa_actionArea.style.display = 'none';
+            document.getElementById("sresult").innerText="";
+            document.getElementById("cresult").innerText=""
+
+            sdropdownContainer.innerHTML="";
+            cdropdownContainer.innerHTML="";
+        }
+
+    </script>
+</html>
