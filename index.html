@@ -5,6 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         @media (max-width: 768px) {
             .content {
                 background-size: contain;
@@ -26,7 +29,7 @@
         }
         #sgpa, #cgpa {
             background-color: #473f90;
-            width: 210px;
+            width: 230px;
             border-radius: 8px;
             border: #473f90;
             margin: 8px 0;
@@ -64,7 +67,7 @@
         }
         #add_sub, #rem_sub, #add_sem, #rem_sem{
             background-color: #473f90;
-            width: 230px;
+            width: 210px;
             border-radius: 8px;
             border: #473f90;
             margin: 8px 0;
@@ -117,6 +120,9 @@
             border: 2px solid #f2d7b1;
             background-color: #3e5a8e;
             }
+            ::placeholder{
+                color:#f8e4aa;
+            }
     </style>
     <body>
         <button id="sgpa" >SGPA</button>
@@ -132,7 +138,7 @@
                 <button id="rstbtn" onclick="reset()">Reset</button>
         </div>
         <div id="cgpa_actionArea" style="display: none">
-            <div class="addingRows">
+            <div id="addingRows">
             <button id="add_sem"> + Add Semester </button> 
             <button id="rem_sem" onclick="rem_sem()"> - Remove Semester </button>
             </div>
